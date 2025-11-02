@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Plus, Package, TrendingUp, Truck } from "lucide-react";
+import { Plus, Package, TrendingUp, Truck, Trash2 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import { useToast } from "@/hooks/use-toast";
 
@@ -85,6 +85,56 @@ const FarmerDashboard = () => {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDeleteCrop = async (cropId: string) => {
+    try {
+      const { error } = await supabase
+        .from("crops")
+        .delete()
+        .eq("id", cropId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Crop deleted successfully",
+      });
+
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) await fetchCrops(session.user.id);
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleToggleAvailability = async (cropId: string, currentStatus: boolean) => {
+    try {
+      const { error } = await supabase
+        .from("crops")
+        .update({ available: !currentStatus })
+        .eq("id", cropId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: currentStatus ? "Crop marked as sold" : "Crop marked as available",
+      });
+
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) await fetchCrops(session.user.id);
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
     }
   };
 
@@ -188,8 +238,8 @@ const FarmerDashboard = () => {
             ) : (
               <div className="space-y-4">
                 {crops.map((crop) => (
-                  <div key={crop.id} className="border rounded-lg p-4 flex justify-between items-center">
-                    <div>
+                  <div key={crop.id} className="border rounded-lg p-4 flex justify-between items-center gap-4">
+                    <div className="flex-1">
                       <h3 className="font-semibold text-lg">{crop.crop_name}</h3>
                       <p className="text-sm text-muted-foreground">
                         {crop.category} • {crop.location_district}
@@ -198,14 +248,30 @@ const FarmerDashboard = () => {
                         Quantity: {crop.quantity_kg} kg • Price: ₹{crop.price_per_kg}/kg
                       </p>
                     </div>
-                    <div className="text-right">
+                    <div className="text-right flex flex-col items-end gap-2">
                       <div className={`inline-block px-3 py-1 rounded-full text-sm ${
                         crop.available ? 'bg-success/10 text-success' : 'bg-muted text-muted-foreground'
                       }`}>
                         {crop.available ? 'Available' : 'Sold Out'}
                       </div>
-                      <div className="text-lg font-bold mt-2">
+                      <div className="text-lg font-bold">
                         ₹{(crop.quantity_kg * crop.price_per_kg).toLocaleString('en-IN')}
+                      </div>
+                      <div className="flex gap-2 mt-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleToggleAvailability(crop.id, crop.available)}
+                        >
+                          {crop.available ? 'Mark as Sold' : 'Mark Available'}
+                        </Button>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => handleDeleteCrop(crop.id)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
                       </div>
                     </div>
                   </div>
