@@ -1,10 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Sprout, LogOut } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { Sprout } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import UserAvatar from "@/components/UserAvatar";
 
 interface NavbarProps {
   isAuthenticated?: boolean;
@@ -13,17 +12,7 @@ interface NavbarProps {
 
 const Navbar = ({ isAuthenticated, userRole }: NavbarProps) => {
   const navigate = useNavigate();
-  const { toast } = useToast();
   const { t } = useTranslation();
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    toast({
-      title: t("common.success"),
-      description: "You have been logged out successfully",
-    });
-    navigate("/");
-  };
 
   return (
     <nav className="border-b bg-card">
@@ -51,10 +40,7 @@ const Navbar = ({ isAuthenticated, userRole }: NavbarProps) => {
               <Link to="/chatbot">
                 <Button variant="ghost">{t("nav.aiAssistant")}</Button>
               </Link>
-              <Button variant="outline" size="sm" onClick={handleLogout}>
-                <LogOut className="h-4 w-4 mr-2" />
-                {t("nav.logout")}
-              </Button>
+              <UserAvatar />
             </>
           ) : (
             <>
