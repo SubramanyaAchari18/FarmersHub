@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Sprout, LogOut } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from "react-i18next";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 interface NavbarProps {
   isAuthenticated?: boolean;
@@ -12,11 +14,12 @@ interface NavbarProps {
 const Navbar = ({ isAuthenticated, userRole }: NavbarProps) => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
     toast({
-      title: "Logged out",
+      title: t("common.success"),
       description: "You have been logged out successfully",
     });
     navigate("/");
@@ -32,33 +35,34 @@ const Navbar = ({ isAuthenticated, userRole }: NavbarProps) => {
           <span className="text-primary">Farmer Hub</span>
         </Link>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
+          <LanguageSwitcher />
           {isAuthenticated ? (
             <>
               <Link to={userRole === "farmer" ? "/farmer-dashboard" : "/buyer-dashboard"}>
-                <Button variant="ghost">Dashboard</Button>
+                <Button variant="ghost">{t("nav.dashboard")}</Button>
               </Link>
               <Link to="/marketplace">
-                <Button variant="ghost">Marketplace</Button>
+                <Button variant="ghost">{t("nav.marketplace")}</Button>
               </Link>
               <Link to="/price-prediction">
-                <Button variant="ghost">Price Prediction</Button>
+                <Button variant="ghost">{t("nav.pricePrediction")}</Button>
               </Link>
               <Link to="/chatbot">
-                <Button variant="ghost">AI Assistant</Button>
+                <Button variant="ghost">{t("nav.aiAssistant")}</Button>
               </Link>
               <Button variant="outline" size="sm" onClick={handleLogout}>
                 <LogOut className="h-4 w-4 mr-2" />
-                Logout
+                {t("nav.logout")}
               </Button>
             </>
           ) : (
             <>
               <Link to="/auth">
-                <Button variant="ghost">Login</Button>
+                <Button variant="ghost">{t("nav.login")}</Button>
               </Link>
               <Link to="/auth">
-                <Button>Sign Up</Button>
+                <Button>{t("nav.signup")}</Button>
               </Link>
             </>
           )}

@@ -6,9 +6,11 @@ import { Sprout, Users, TrendingUp, Truck, MessageSquare, Shield } from "lucide-
 import Navbar from "@/components/Navbar";
 import { supabase } from "@/integrations/supabase/client";
 import heroImage from "@/assets/hero-farmland.jpg";
+import { useTranslation } from "react-i18next";
 
 const Index = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userRole, setUserRole] = useState<"farmer" | "buyer" | null>(null);
 
@@ -57,17 +59,17 @@ const Index = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/60" />
         <div className="container mx-auto px-4 relative z-10 text-white">
           <h1 className="text-5xl md:text-6xl font-bold mb-6 max-w-3xl">
-            Direct Connection Between Farmers & Buyers
+            {t("home.heroTitle")}
           </h1>
           <p className="text-xl md:text-2xl mb-8 max-w-2xl opacity-95">
-            No middlemen. Fair prices. Transparent marketplace for India's agriculture.
+            {t("home.heroSubtitle")}
           </p>
           <div className="flex gap-4">
             <Button size="lg" variant="secondary" onClick={() => navigate("/auth")}>
-              Get Started
+              {t("home.getStarted")}
             </Button>
             <Button size="lg" variant="outline" className="bg-white/10 backdrop-blur border-white hover:bg-white/20 text-white" onClick={() => navigate("/marketplace")}>
-              Browse Crops
+              {t("home.browseMarket")}
             </Button>
           </div>
         </div>
@@ -77,7 +79,7 @@ const Index = () => {
       <section className="py-20 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">Why Farmer Hub?</h2>
+            <h2 className="text-4xl font-bold mb-4">{t("home.features")}</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               Empowering farmers and connecting them with buyers across India
             </p>
@@ -87,9 +89,9 @@ const Index = () => {
             <Card>
               <CardHeader>
                 <Users className="h-12 w-12 text-primary mb-4" />
-                <CardTitle>Direct Connection</CardTitle>
+                <CardTitle>{t("home.directSales")}</CardTitle>
                 <CardDescription>
-                  Connect directly with farmers without any middlemen, ensuring fair prices for both parties
+                  {t("home.directSalesDesc")}
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -97,9 +99,9 @@ const Index = () => {
             <Card>
               <CardHeader>
                 <TrendingUp className="h-12 w-12 text-primary mb-4" />
-                <CardTitle>AI Price Prediction</CardTitle>
+                <CardTitle>{t("home.pricePrediction")}</CardTitle>
                 <CardDescription>
-                  ML-powered price predictions help farmers sell at the right time for maximum profit
+                  {t("home.pricePredictionDesc")}
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -107,9 +109,9 @@ const Index = () => {
             <Card>
               <CardHeader>
                 <Truck className="h-12 w-12 text-primary mb-4" />
-                <CardTitle>Transportation Tracking</CardTitle>
+                <CardTitle>{t("home.transportation")}</CardTitle>
                 <CardDescription>
-                  Track your goods in real-time from farm to destination with our logistics system
+                  {t("home.transportationDesc")}
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -117,9 +119,9 @@ const Index = () => {
             <Card>
               <CardHeader>
                 <MessageSquare className="h-12 w-12 text-primary mb-4" />
-                <CardTitle>AI Agricultural Assistant</CardTitle>
+                <CardTitle>{t("home.aiAssistant")}</CardTitle>
                 <CardDescription>
-                  Get instant answers to farming questions, crop care tips, and weather-based advice
+                  {t("home.aiAssistantDesc")}
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -152,16 +154,16 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-3 gap-8 text-center">
             <div>
-              <div className="text-5xl font-bold text-primary mb-2">₹0</div>
-              <div className="text-xl text-muted-foreground">Commission Fees</div>
+              <div className="text-5xl font-bold text-primary mb-2">{t("home.commissionValue")}</div>
+              <div className="text-xl text-muted-foreground">{t("home.commission")}</div>
             </div>
             <div>
-              <div className="text-5xl font-bold text-primary mb-2">24/7</div>
-              <div className="text-xl text-muted-foreground">AI Support Available</div>
+              <div className="text-5xl font-bold text-primary mb-2">{t("home.supportValue")}</div>
+              <div className="text-xl text-muted-foreground">{t("home.support")}</div>
             </div>
             <div>
-              <div className="text-5xl font-bold text-primary mb-2">28</div>
-              <div className="text-xl text-muted-foreground">States Covered</div>
+              <div className="text-5xl font-bold text-primary mb-2">{t("home.coverageValue")}</div>
+              <div className="text-xl text-muted-foreground">{t("home.coverage")}</div>
             </div>
           </div>
         </div>
@@ -171,13 +173,13 @@ const Index = () => {
       <section className="py-20 bg-primary text-primary-foreground">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-4xl font-bold mb-6">
-            Join Thousands of Farmers & Buyers
+            {t("home.ctaTitle")}
           </h2>
           <p className="text-xl mb-8 opacity-95 max-w-2xl mx-auto">
-            Start trading directly today. No middlemen, no commission, just fair prices.
+            {t("home.ctaDesc")}
           </p>
           <Button size="lg" variant="secondary" onClick={() => navigate("/auth")}>
-            Create Free Account
+            {t("home.createAccount")}
           </Button>
         </div>
       </section>
@@ -185,7 +187,7 @@ const Index = () => {
       {/* Footer */}
       <footer className="py-12 border-t">
         <div className="container mx-auto px-4 text-center text-muted-foreground">
-          <p>&copy; 2025 Farmer Hub. Empowering Indian Agriculture.</p>
+          <p>{t("home.footer")}</p>
         </div>
       </footer>
     </div>
