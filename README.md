@@ -1,18 +1,138 @@
-# Welcome to your Lovable project
 
-## Project info
 
-**URL**: https://lovable.dev/projects/7b255f95-785e-4399-ab21-8fd56bff909b
+# 🌾 Farmers Hub
 
-## How can I edit this code?
+A digital platform that connects **farmers directly with buyers** to enable transparent, fair, and efficient agricultural trade. Farmers Hub aims to reduce middlemen dependency, provide better price visibility, and empower farmers using technology.
 
-There are several ways of editing your application.
+---
 
-**Use Lovable**
+## 📌 Project Overview
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/7b255f95-785e-4399-ab21-8fd56bff909b) and start prompting.
+Farmers Hub is a web-based application designed as part of a **final-year software project**. The platform allows farmers to list their crops and buyers to directly view, negotiate, and purchase crops. An additional focus of the project is **price transparency** and **data-driven insights** for farmers.
 
-Changes made via Lovable will be committed automatically to this repo.
+The system is built with scalability, usability, and real-world applicability in mind.
+
+---
+
+## 🎯 Objectives
+
+* Enable **direct farmer-to-buyer communication**
+* Reduce exploitation by intermediaries
+* Provide **fair and transparent crop pricing**
+* Digitize crop listings and demand
+* Help farmers make informed selling decisions
+
+---
+
+## 👥 Target Users
+
+* **Farmers** – to list crops, view prices, and find buyers
+* **Buyers / Traders** – to search crops and connect with farmers
+* **Admins** – to manage users, listings, and platform integrity
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend:** React, Vite, Tailwind CSS, shadcn/ui
+- **Backend:** Node.js, Express, Prisma
+- **Database:** PostgreSQL
+- **ML:** Python, scikit-learn, Random Forest
+
+
+### Other Tools & Technologies
+
+ Git, GitHub, Postman ,DBeaver
+
+---
+
+## ✨ Key Features
+
+### 👨‍🌾 Farmer Module
+
+* Farmer registration & login
+* Crop listing with details (name, quantity, price, location)
+* View buyer requests
+* Manage own listings
+
+### 🛒 Buyer Module
+
+* Buyer registration & login
+* Search crops by category, price, or location
+* View farmer details
+* Contact farmers directly
+
+### 📊 Price Prediction (ML Feature)
+
+* Predicts crop prices based on historical data
+* Helps farmers decide the right selling price
+* here we are using Random forest algorithm to implement this 
+
+### 🛡️ Admin Module
+
+* Manage users (farmers & buyers)
+* Monitor crop listings
+* Ensure platform safety and data validity
+
+---
+
+## 🚀 Quick Start
+
+**For detailed setup instructions, see [SETUP.md](./SETUP.md)**
+
+### Prerequisites
+- Node.js (v18+)
+- Python (v3.8+)
+- PostgreSQL (v12+)
+
+### Quick Setup
+
+1. **Install dependencies:**
+   ```bash
+   # Backend
+   cd backend && npm install
+   
+   # Frontend
+   npm install
+   
+   # ML (Optional)
+   cd backend/ml && pip install -r requirements.txt
+   ```
+
+2. **Set up database:**
+   ```bash
+   cd backend
+   # Create .env file with DATABASE_URL
+   npm run prisma:generate
+   npm run prisma:migrate
+   ```
+
+3. **Start servers:**
+   ```bash
+   # Windows
+   start-dev.bat
+   
+   # Linux/Mac
+   ./start-dev.sh
+   ```
+
+4. **Access the application:**
+   - Frontend: http://localhost:8080
+   - Backend API: http://localhost:4000
+
+## 📁 Project Structure
+
+- `src/` - React frontend (Vite)
+- `backend/` - Node.js/Express API
+- `backend/ml/` - ML model for crop price prediction
+- `backend/prisma/` - Database schema
+
+## 📚 Documentation
+
+- **[SETUP.md](./SETUP.md)** - Complete setup guide
+- **[QUICK_REFERENCE.md](./QUICK_REFERENCE.md)** - Quick command reference
+- **[backend/ml/README.md](./backend/ml/README.md)** - ML model documentation
+
 
 **Use your preferred IDE**
 
@@ -60,14 +180,32 @@ This project is built with:
 - shadcn-ui
 - Tailwind CSS
 
-## How can I deploy this project?
 
-Simply open [Lovable](https://lovable.dev/projects/7b255f95-785e-4399-ab21-8fd56bff909b) and click on Share -> Publish.
+## 🤝 Team Members
 
-## Can I connect a custom domain to my Lovable project?
+* Subramanya Bhaskar Achari(4SU22IS051) 
+* Prateek Gokhale(4SU22IS035)
+* C H Devaraj(4SU22IS013)
+* Srujan(4SU22IS049)
 
-Yes, you can!
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+## 📜 License
+
+This project is developed for **academic purposes**.
+Team ID: 7ISP10
+
+---
+
+## 🙏 Acknowledgements
+
+* College / University
+* Project Guide
+* Open-source tools and libraries
+
+---
+
+
+
+> *“Empowering farmers through technology and transparency.”* 🌱
+

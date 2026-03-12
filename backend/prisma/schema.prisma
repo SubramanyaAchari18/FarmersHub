@@ -1,0 +1,160 @@
+// Datasource
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Generator
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Enums (mirror Supabase)
+enum AppRole {
+  farmer
+  buyer
+}
+
+enum CropCategory {
+  grains
+  vegetables
+  fruits
+  pulses
+  spices
+  others
+}
+
+enum OrderStatus {
+  pending
+  confirmed
+  picked_up
+  in_transit
+  delivered
+  completed
+  cancelled
+}
+
+// Models
+model User {
+  id           String   @id @default(uuid()) @db.Uuid
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+
+  profile           Profile?
+  roles             UserRole[]
+  crops             Crop[]                  @relation("UserCrops")
+  transportAsFarmer TransportationRequest[] @relation("TRFarmer")
+  transportAsBuyer  TransportationRequest[] @relation("TRBuyer")
+  ratingsGiven      Rating[]                @relation("BuyerRatings")
+  ratingsGot        Rating[]                @relation("FarmerRatings")
+
+  pricePredictions PricePrediction[]
+}
+
+model Profile {
+  id              String   @id @db.Uuid
+  fullName        String
+  phone           String?
+  village         String?
+  taluk           String?
+  district        String?
+  state           String?
+  profilePhotoUrl String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @default(now())
+
+  user User @relation(fields: [id], references: [id], onDelete: Cascade)
+}
+
+model UserRole {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  role      AppRole
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, role])
+  @@index([userId])
+}
+
+model Crop {
+  id               String       @id @default(uuid()) @db.Uuid
+  farmerId         String       @db.Uuid
+  cropName         String
+  category         CropCategory
+  quantityKg       Decimal
+  pricePerKg       Decimal
+  description      String?
+  locationVillage  String
+  locationTaluk    String?
+  locationDistrict String
+  locationState    String
+  imageUrl         String?
+  available        Boolean      @default(true)
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @default(now())
+
+  farmer            User                    @relation("UserCrops", fields: [farmerId], references: [id], onDelete: Cascade)
+  transportRequests TransportationRequest[]
+
+  @@index([farmerId])
+  @@index([category])
+  @@index([available])
+  @@index([locationState, locationDistrict])
+}
+
+model TransportationRequest {
+  id               String      @id @default(uuid()) @db.Uuid
+  cropId           String      @db.Uuid
+  farmerId         String      @db.Uuid
+  buyerId          String?     @db.Uuid
+  quantityKg       Decimal
+  totalPrice       Decimal
+  pickupLocation   String
+  deliveryLocation String?
+  status           OrderStatus @default(pending)
+  trackingNotes    String?
+  estimatedDeliveryAt DateTime?
+  otp              String?
+  requestedAt      DateTime    @default(now())
+  pickedUpAt       DateTime?
+  deliveredAt      DateTime?
+  updatedAt        DateTime    @default(now())
+
+  crop   Crop  @relation(fields: [cropId], references: [id], onDelete: Cascade)
+  farmer User  @relation("TRFarmer", fields: [farmerId], references: [id], onDelete: Cascade)
+  buyer  User? @relation("TRBuyer", fields: [buyerId], references: [id])
+
+  @@index([farmerId])
+  @@index([buyerId])
+}
+
+model PricePrediction {
+  id                  String       @id @default(uuid()) @db.Uuid
+  userId              String?      @db.Uuid
+  cropName            String
+  category            CropCategory
+  locationState       String
+  season              String
+  predictedPricePerKg Decimal
+  confidenceScore     Decimal?
+  createdAt           DateTime     @default(now())
+
+  user User? @relation(fields: [userId], references: [id])
+}
+
+model Rating {
+  id         String   @id @default(uuid()) @db.Uuid
+  farmerId   String   @db.Uuid
+  buyerId    String   @db.Uuid
+  rating     Int
+  reviewText String?
+  createdAt  DateTime @default(now())
+
+  farmer User @relation("FarmerRatings", fields: [farmerId], references: [id], onDelete: Cascade)
+  buyer  User @relation("BuyerRatings", fields: [buyerId], references: [id], onDelete: Cascade)
+
+  @@index([farmerId])
+}

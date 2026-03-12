@@ -1,7 +1,0 @@
-project_id = "cwxbaqgvrtejjotxdaaw"
-
-[functions.agricultural-assistant]
-verify_jwt = false
-
-[functions.predict-crop-price]
-verify_jwt = false
